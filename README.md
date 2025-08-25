@@ -1,5 +1,5 @@
 # hianime_api
-Node.js hianime scraper (cheerio,axios,express,cors)
+Node.js hianime scraper (cheerio, axios, express, cors)
 
 # Instructions on how to use this api<br><br>
 
