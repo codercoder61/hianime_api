@@ -12,8 +12,8 @@ The first step is to deploy this Node.js server (files scraper.js, package.json,
 category can be one of the following ("subbed-anime" | "dubbed-anime" | "most-popular" | "movie" | "tv" | "special" | "ona" | "ova" | "top-airing")<br><br>
 ## To get anime episodes by anime dataId<br>
 /episodes?dataId={dataId}<br><br>
-## To get anime info by anime dataId<br>
-/animeInfo?dataId={dataId}<br><br>
+## To get anime info by anime animeId<br>
+/animeInfo?animeId={animeId}<br><br>
 ## To search anime (page is optional)<br>
 /search?keyword={keyword}[&page={page}]<br><br>
 ## To get filtered anime (page, type, status and genre are optional)<br>
@@ -75,5 +75,5 @@ Finished airing value="1"<br>
 Currently airing value="2"<br>
 Not yet aired value="3"<br><br>
 ## EPISODE SOURCE STREAMING URL <br>
-For episode source (streaming url to embed in iframe) use https://megaplay.buzz/api
+For episode source (streaming url to embed in iframe) use https://megaplay.buzz/api (For this, episode id is needed, you can get it with this route "/episodes?dataId=****")
 
