@@ -1,0 +1,15 @@
+{
+  "name": "Hianime Node.js Scraper",
+  "description": "A Node.js scraper for hianime",
+  "repository": "https://github.com/codercoder61/hianime_api",
+  "keywords": ["node", "express", "scraper"],
+  "scripts": {
+    "start": "node scraper.js"
+  },
+  "env": {
+    "PORT": {
+      "description": "Port number Heroku will use",
+      "value": "3000"
+    }
+  }
+}
