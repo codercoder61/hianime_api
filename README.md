@@ -14,7 +14,7 @@ To search anime (page is optional)<br>
 /search?keyword={keyword}[&page={page}]<br><br>
 To get filtered anime (page is optional)<br>
 /filter?[type={type}&status={status}&genres={genres}&page={page}]<br>
-# GENRE CAN BE ONE VALUE OF THE FOLLOWING <br>
+## GENRE CAN BE ONE VALUE OF THE FOLLOWING <br>
 All value=""<br>
 Action value="1"<br>
 Adventure value="2"<br>
@@ -57,7 +57,7 @@ Isekai value="44"<br>
 Slice of Life value="36"<br>
 Supernatural value="37"<br>
 Military value="38"<br>
-# TYPE CAN BE ONE VALUE OF THE FOLLOWING<br>
+## TYPE CAN BE ONE VALUE OF THE FOLLOWING<br>
  All value=""<br>
 Movie value="1"<br>
 TV value="2"<br>
@@ -65,7 +65,7 @@ OVA value="3"<br>
 ONA value="4"<br>
 Special value="5"<br>
 Music value="6"<br>
-# Status CAN BE ONE VALUE OF THE FOLLOWING<br>
+## Status CAN BE ONE VALUE OF THE FOLLOWING<br>
 All value=""<br>
 Finished airing value="1"<br>
 Currently airing value="2"<br>
