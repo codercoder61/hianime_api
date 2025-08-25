@@ -7,6 +7,8 @@ The first step is to host your Node.js server (including files like scraper.js, 
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/codercoder61/hianime_api)
 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/codercoder61/hianime_api/main/azuredeploy.json)
+
 ## To get animes by categorie (page is optional)<br>
 /?category={category}[&page={page}]<br>
 category can be one of the following ("subbed-anime" | "dubbed-anime" | "most-popular" | "movie" | "tv" | "special" | "ona" | "ova" | "top-airing")<br><br>
