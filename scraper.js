@@ -60,6 +60,11 @@ async function scrapeAnime(url,category,animeList = [], page = 1){
 } 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 app.use(cors());
 
 app.get('/', async (req, res) => {
@@ -375,12 +380,3 @@ app.get('/filter', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
