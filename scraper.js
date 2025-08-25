@@ -59,7 +59,7 @@ async function scrapeAnime(url,category,animeList = [], page = 1){
   }
 } 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.use(cors());
 
 app.get('/', async (req, res) => {
