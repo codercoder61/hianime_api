@@ -71,18 +71,18 @@ app.get('/', async (req, res) => {
   const queryKeys = Object.keys(req.query);
   const allowedQuery = ['category', 'page'];
 
-  // Case 1: No query params - show welcome message
+  // Case 1: No query params - welcome message
   if (queryKeys.length === 0) {
     return res
       .status(200)
-      .send('<h1>welcome to hianime API</h1>');
+      .send('<h1>Welcome to HiAnime API</h1><p>Use ?category=your-category to get started.</p>');
   }
 
   // Case 2: category is missing, but other queries exist
   if (!req.query.category) {
     return res
       .status(400)
-      .send('<h1>400 Bad Request</h1>');
+      .send('<h1>400 Bad Request</h1><p>Please provide a "category" query parameter in the URL.</p>');
   }
 
   // Case 3: Invalid query parameters
@@ -404,5 +404,6 @@ app.get('/filter', async (req, res) => {
     res.status(500).json({ error: 'Failed to scrape the website or fetch data.' });
   }
 });
+
 
 
