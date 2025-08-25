@@ -70,6 +70,6 @@ All value=""<br>
 Finished airing value="1"<br>
 Currently airing value="2"<br>
 Not yet aired value="3"<br><br>
-# EPISODE SOURCE STREAMING URL <br>
+## EPISODE SOURCE STREAMING URL <br>
 For episode source (streaming url to embed in iframe) use https://megaplay.buzz/api
 
