@@ -69,7 +69,7 @@ OVA value="3"<br>
 ONA value="4"<br>
 Special value="5"<br>
 Music value="6"<br>
-### Status CAN BE ONE VALUE OF THE FOLLOWING<br>
+### STATUS CAN BE ONE VALUE OF THE FOLLOWING<br>
 All value=""<br>
 Finished airing value="1"<br>
 Currently airing value="2"<br>
