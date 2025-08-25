@@ -3,16 +3,16 @@ Node.js hianime scraper (cheerio,axios,express,cors)
 
 # Instructions on how to use this api
 
-To get animes by categorie (page is optional)<br>
+###To get animes by categorie (page is optional)<br>
 /?category={category}[&page={page}]<br>
 category can be one of the following ("subbed-anime" | "dubbed-anime" | "most-popular" | "movie" | "tv" | "special" | "ona" | "ova" | "top-airing")<br><br>
-To get anime episodes by anime dataId<br>
+###To get anime episodes by anime dataId<br>
 /episodes?dataId={dataId}<br><br>
-To get anime info by anime dataId<br>
+###To get anime info by anime dataId<br>
 /animeInfo?dataId={dataId}<br><br>
-To search anime (page is optional)<br>
+###To search anime (page is optional)<br>
 /search?keyword={keyword}[&page={page}]<br><br>
-To get filtered anime (page is optional)<br>
+###To get filtered anime (page is optional)<br>
 /filter?[type={type}&status={status}&genres={genres}&page={page}]<br>
 ## GENRE CAN BE ONE VALUE OF THE FOLLOWING <br>
 All value=""<br>
