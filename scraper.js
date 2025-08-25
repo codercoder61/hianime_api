@@ -68,6 +68,31 @@ app.listen(PORT, "0.0.0.0", () => {
 app.use(cors());
 
 app.get('/', async (req, res) => {
+  const queryKeys = Object.keys(req.query);
+  const allowedQuery = ['category', 'page'];
+
+  // Case 1: No query params - show welcome message
+  if (queryKeys.length === 0) {
+    return res
+      .status(200)
+      .send('<h1>welcome to hianime API</h1>');
+  }
+
+  // Case 2: category is missing, but other queries exist
+  if (!req.query.category) {
+    return res
+      .status(400)
+      .send('<h1>400 Bad Request</h1>');
+  }
+
+  // Case 3: Invalid query parameters
+  const invalidKeys = queryKeys.filter(key => !allowedQuery.includes(key));
+  if (invalidKeys.length > 0) {
+    return res
+      .status(404)
+      .send(`<h1>404 Not Found</h1><p>No matching route for query parameter(s): ${invalidKeys.join(', ')}</p>`);
+  }
+
   const category = req.query.category;
   const page = parseInt(req.query.page) || 1;
 
@@ -379,4 +404,5 @@ app.get('/filter', async (req, res) => {
     res.status(500).json({ error: 'Failed to scrape the website or fetch data.' });
   }
 });
+
 
