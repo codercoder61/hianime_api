@@ -10,8 +10,6 @@ To get anime episodes by anime dataId<br>
 /episodes?dataId={dataId}<br><br>
 To get anime info by anime dataId<br>
 /animeInfo?dataId={dataId}<br><br>
-To get episode servers by episodeId<br>
-/servers?episodeId={episodeId}<br><br>
 To search anime (page is optional)<br>
 /search?keyword={keyword}[&page={page}]<br><br>
 To get filtered anime (page is optional)<br>
