@@ -16,7 +16,7 @@ category can be one of the following ("subbed-anime" | "dubbed-anime" | "most-po
 /animeInfo?dataId={dataId}<br><br>
 ## To search anime (page is optional)<br>
 /search?keyword={keyword}[&page={page}]<br><br>
-## To get filtered anime (page is optional)<br>
+## To get filtered anime (page, type, status and genre are optional)<br>
 /filter?[type={type}&status={status}&genres={genres}&page={page}]<br>
 ### GENRE CAN BE ONE VALUE OF THE FOLLOWING <br>
 All value=""<br>
