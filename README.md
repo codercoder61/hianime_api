@@ -5,6 +5,7 @@ Node.js hianime scraper (cheerio,axios,express,cors)
 
 The first step is to host your Node.js server (including files like scraper.js, package.json, etc.) on a platform such as Render, Railway, AWS, Microsoft Azure, or similar. Once hosted, you can prefix your API routes with your domain URL, for example: https://your-domain.com/episodes?dataId=181881.
 
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/codercoder61/hianime_api)
 
 ## To get animes by categorie (page is optional)<br>
 /?category={category}[&page={page}]<br>
