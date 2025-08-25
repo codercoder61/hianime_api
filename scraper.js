@@ -75,7 +75,7 @@ app.get('/', async (req, res) => {
   if (queryKeys.length === 0) {
     return res
       .status(200)
-      .send('<h1>Welcome to HiAnime API</h1>');
+      .send('<h1>Welcome to hianime API</h1>');
   }
 
   // Case 2: category is missing, but other queries exist
@@ -404,6 +404,7 @@ app.get('/filter', async (req, res) => {
     res.status(500).json({ error: 'Failed to scrape the website or fetch data.' });
   }
 });
+
 
 
 
