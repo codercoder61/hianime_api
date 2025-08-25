@@ -9,6 +9,8 @@ The first step is to host your Node.js server (including files like scraper.js, 
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/codercoder61/hianime_api/main/azuredeploy.json)
 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/codercoder61/hianime_api)
+
 ## To get animes by categorie (page is optional)<br>
 /?category={category}[&page={page}]<br>
 category can be one of the following ("subbed-anime" | "dubbed-anime" | "most-popular" | "movie" | "tv" | "special" | "ona" | "ova" | "top-airing")<br><br>
