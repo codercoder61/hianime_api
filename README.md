@@ -6,7 +6,7 @@ Node.js hianime scraper (cheerio,axios,express,cors)
 ## To get animes by categorie (page is optional)<br>
 /?category={category}[&page={page}]<br>
 category can be one of the following ("subbed-anime" | "dubbed-anime" | "most-popular" | "movie" | "tv" | "special" | "ona" | "ova" | "top-airing")<br><br>
-###To get anime episodes by anime dataId<br>
+## To get anime episodes by anime dataId<br>
 /episodes?dataId={dataId}<br><br>
 ## To get anime info by anime dataId<br>
 /animeInfo?dataId={dataId}<br><br>
