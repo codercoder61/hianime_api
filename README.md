@@ -7,7 +7,7 @@ The first step is to deploy this Node.js server (files scraper.js, package.json,
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/codercoder61/hianime_api)
 
-## To get animes by categorie (page is optional)<br>
+## To get animes by category (page is optional)<br>
 /?category={category}[&page={page}]<br>
 category can be one of the following ("subbed-anime" | "dubbed-anime" | "most-popular" | "movie" | "tv" | "special" | "ona" | "ova" | "top-airing")<br><br>
 ## To get anime episodes by anime dataId<br>
