@@ -77,22 +77,3 @@ Not yet aired value="3"<br><br>
 ## EPISODE SOURCE STREAMING URL <br>
 For episode source (streaming url to embed in iframe) use https://megaplay.buzz/api (For this, episode id is needed, you can get it with this route "/episodes?dataId=****")
 
-## Recent Improvements (December 2024)
-
-### Enhanced Scraper Robustness
-- **Cookie persistence**: Added axios-cookiejar-support with tough-cookie to maintain session cookies across requests, reducing 503 errors
-- **Automatic retries**: Implemented retry logic with exponential backoff for transient errors (429, 503, 502, etc.)
-- **Session pre-warming**: Auto-fetches homepage once to establish cookies before API requests
-- **Proper AJAX headers**: Episodes endpoint now sends X-Requested-With and proper Referer/Origin headers required by the site
-- **Reduced rate limiting**: Search and filter endpoints no longer fetch individual anime detail pages, significantly reducing request volume
-
-### Dependencies Added
-- axios-cookiejar-support: For cookie jar support
-- tough-cookie: Cookie handling library
-
-### Technical Details
-- New httpClient.js module handles all HTTP requests with proper error handling
-- Disabled HTTP keep-alive to improve compatibility with some reverse proxies
-- All requests now include proper Referer and Origin headers
-- Search/filter endpoints return lightweight results without per-item detail fetches
-
