@@ -1,13 +1,15 @@
 const express = require('express');
-const axios = require('axios');
 const cheerio = require('cheerio');
 const cors = require('cors');
+const { client, getWithRetry, ensurePrewarm } = require('./httpClient');
 
 async function scrapeAnime(url,category,animeList = [], page = 1){
   try {
-    const { data } = await axios.get(`${url}/${category}?page=${page}`, {
+    await ensurePrewarm();
+    const { data } = await getWithRetry(`${url}/${category}?page=${page}`, {
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+            Referer: `${url}/${category}?page=${page}`,
+            Origin: url
         }
     });
     const $ = cheerio.load(data);
@@ -17,9 +19,10 @@ async function scrapeAnime(url,category,animeList = [], page = 1){
     const poster = $(el).find('div > div.film-poster > img').attr('data-src');
     const href = $(el).find('a').attr('href');
     const animeId = href ? href.slice(1) : '';
-    const { data: data2 } = await axios.get(`${url}/${animeId}`, {
+    const { data: data2 } = await getWithRetry(`${url}/${animeId}`, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                Referer: `${url}/${category}?page=${page}`,
+                Origin: url
             },
     });
 
@@ -122,8 +125,9 @@ app.get('/episodes', async (req, res) => {
   const url = `https://hianime.to`;
 
   
-    const { data } = await axios.get(
-    `${url}/ajax/v2/episode/list/${dataId}`
+    const { data } = await getWithRetry(
+    `${url}/ajax/v2/episode/list/${dataId}`,
+    { headers: { 'X-Requested-With': 'XMLHttpRequest', Referer: url, Origin: url, Accept: 'application/json, text/javascript, */*; q=0.01' } }
     );
     const $ = cheerio.load(data.html);
     const episodes = $("div.ss-list > a.ep-item")
@@ -154,7 +158,8 @@ app.get('/animeInfo', async (req, res) => {
 
   try {
     // Fetch the anime page
-    const { data } = await axios.get(`${url}/${animeId}`);
+    await ensurePrewarm();
+    const { data } = await getWithRetry(`${url}/${animeId}`, { headers: { Referer: `${url}/${animeId}`, Origin: url } });
     const $ = cheerio.load(data);
 
     // Scrape the 'Aired' date
@@ -273,9 +278,11 @@ let $;
 
 if (keyword.length === 1) {
 url = `https://hianime.to/az-list/${keyword.toLowerCase()}?page=${page}`;
-  const response = await axios.get(url, {
+  await ensurePrewarm();
+  const response = await getWithRetry(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      Referer: url,
+      Origin: 'https://hianime.to',
     },
   });
 
@@ -285,9 +292,11 @@ url = `https://hianime.to/az-list/${keyword.toLowerCase()}?page=${page}`;
 
 } else {
   url = `https://hianime.to/search?keyword=${keyword}&page=${page}`;
-  const response = await axios.get(url, {
+  await ensurePrewarm();
+  const response = await getWithRetry(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      Referer: url,
+      Origin: 'https://hianime.to',
     },
   });
 
@@ -305,16 +314,7 @@ url = `https://hianime.to/az-list/${keyword.toLowerCase()}?page=${page}`;
       const href = $(el).find('a').attr('href');
       const animeId = href ? href.slice(1).replace('watch/', ''): ''; // Extract animeId from href
 
-      // Fetch the detailed anime data from its individual page
-      const { data: data2 } = await axios.get(`https://hianime.to/${animeId}`, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', // Ensure headers for subsequent requests
-        },
-      });
-
-      const $$ = cheerio.load(data2); // Load the detailed page content
-
-      // Extract additional fields such as the title
+      // Extract fields directly from listing without per-item detail fetch
       const title = $(el).find('div.film-detail > h3 > a').text().trim() || 'N/A';
       const dataId = $(el).find("a[data-id]").attr("data-id") || 'N/A';
 
@@ -352,48 +352,24 @@ app.get('/filter', async (req, res) => {
   let animeList = [];
 
   try {
-    const { data } = await axios.get(finalUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+    await ensurePrewarm();
+    const { data } = await getWithRetry(finalUrl, {
+      headers: { Referer: finalUrl, Origin: 'https://hianime.to' },
     });
 
     const $ = cheerio.load(data);
     const animeElements = $('#main-wrapper > div > div.page-search-wrap > section > div.block_area-content.block_area-list.film_list.film_list-grid > div.film_list-wrap > div').toArray();
 
-    const fetchDetailsPromises = animeElements.map(async (el) => {
-      const poster = $(el).find('div > div.film-poster > img').attr('data-src') || '';
-      const href = $(el).find('a').attr('href');
+    // Build a lightweight list without per-item detail fetches to avoid rate limits
+    animeList = animeElements.map((el) => {
+      const $el = $(el);
+      const poster = $el.find('div > div.film-poster > img').attr('data-src') || '';
+      const href = $el.find('a').attr('href');
       const animeId = href ? href.slice(1).replace('watch/', '') : '';
-
-      try {
-        const { data: data2 } = await axios.get(`https://hianime.to/${animeId}`, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-        });
-
-        const $$ = cheerio.load(data2);
-        const title = $(el).find('div.film-detail > h3 > a').text().trim() || 'N/A';
-        const dataId = $(el).find("a[data-id]").attr("data-id") || 'N/A';
-        const aired = $$('#ani_detail > div > div > div.anis-content > div.anisc-info-wrap > div.anisc-info > div:nth-child(3) > span.name').text().trim();
-        const premiered = $$('#ani_detail > div > div > div.anis-content > div.anisc-info-wrap > div.anisc-info > div:nth-child(4) > span.name').text().trim();
-        const status = $$('#ani_detail > div > div > div.anis-content > div.anisc-info-wrap > div.anisc-info > div:nth-child(6) > span.name').text().trim();
-        const genres = [];
-
-        $$('#ani_detail > div > div > div.anis-content > div.anisc-info-wrap > div.anisc-info > div.item.item-list > a').each((i, el) => {
-          const genre = $$(el).text().trim();
-          if (genre) genres.push(genre);
-        });
-
-        const description = $$('#ani_detail > div > div > div.anis-content > div.anisc-detail > div.film-description.m-hide > div').text().trim();
-
-        return { dataId, poster, animeId, title, aired, premiered, status, genres, description };
-
-      } catch (err) {
-        console.warn(`Failed to fetch details for ${animeId}`);
-        return null;
-      }
+      const title = $el.find('div.film-detail > h3 > a').text().trim() || 'N/A';
+      const dataId = $el.find('a[data-id]').attr('data-id') || 'N/A';
+      return { dataId, poster, animeId, title };
     });
-
-    const animeDetails = await Promise.all(fetchDetailsPromises);
-    animeList = animeDetails.filter(item => item !== null);
 
     const nextPageExists = $('div.pre-pagination.mt-5.mb-5 > nav > ul > li.page-item.active').next().length > 0;
 
