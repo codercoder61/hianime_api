@@ -145,7 +145,7 @@ app.get('/episodes', async (req, res) => {
 app.get('/episodeServers', async (req, res) => {
   const episodeId = req.query.episodeId;
 
-  if (!dataId) {
+  if (!episodeId) {
     return res.status(400).json({ error: 'Please provide a "episodeId" query parameter.' });
   }
 
@@ -453,6 +453,7 @@ app.get('/filter', async (req, res) => {
     res.status(500).json({ error: 'Failed to scrape the website or fetch data.' });
   }
 });
+
 
 
 
