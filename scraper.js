@@ -202,6 +202,91 @@ app.get('/episodeServers', async (req, res) => {
   }
 });
 
+app.get('/episodeSources', async (req, res) => {
+  const serverId = req.query.serverId;
+
+  // Check if serverId is provided
+  if (!serverId) {
+    return res.status(400).json({ error: 'Please provide a "serverId" query parameter.' });
+  }
+
+  const url = `https://hianime.to`;
+
+  try {
+    // Make the request to fetch episode sources
+    const { data } = await axios.get(
+      `${url}/ajax/v2/episode/sources?id=${serverId}`
+    );
+
+    const embedLink = data?.link;
+    if (!embedLink) {
+      throw new Error(
+        `No embed link returned for serverId ${serverId}. Response: ${JSON.stringify(
+          data
+        ).slice(0, 200)}...`
+      );
+    }
+
+    const { data: embedData } = await axios.get(embedLink, {
+      headers: {
+        Referer: 'https://hianime.to',
+      },
+    });
+
+    const $ = cheerio.load(embedData);
+    const dataId = $("div[data-id]").attr("data-id");
+
+    if (!dataId) {
+      throw new Error(`Failed to extract data-id from the embed page.`);
+    }
+
+    let nonce = null;
+
+    // Try a single 48-char token first
+    const regex48 = /\b[a-zA-Z0-9]{48}\b/;
+    const match48 = embedData.match(regex48);
+    if (match48 && match48[0]) {
+      nonce = match48[0];
+    } else {
+      // Fallback: concatenate multiple 16-char tokens
+      const regex16 = /"([a-zA-Z0-9]{16})"/g;
+      const parts = [];
+      let m;
+      while ((m = regex16.exec(embedData)) !== null) {
+        if (m[1]) parts.push(m[1]);
+      }
+      if (parts.length) nonce = parts.join("");
+    }
+
+    if (!nonce) {
+      throw new Error(
+        `Failed to extract nonce from embed page for serverId ${serverId}`
+      );
+    }
+
+    const { data: sources } = await axios.get(
+      `https://megacloud.blog/embed-2/v3/e-1/getSources`,
+      {
+        params: {
+          id: dataId,
+          _k: nonce,
+        },
+        headers: {
+          Referer: embedLink,
+        },
+      }
+    );
+
+    sources.headers = {
+      Referer: "https://megacloud.blog/",
+    };
+
+    return res.json(sources);
+  } catch (error) {
+    // Handle any errors that occur during the request or scraping
+    return res.status(500).json({ error: 'Failed to fetch data', message: error.message });
+  }
+});
 
 app.get('/animeInfo', async (req, res) => {
   const animeId = req.query.animeId;
@@ -464,6 +549,7 @@ app.get('/filter', async (req, res) => {
     res.status(500).json({ error: 'Failed to scrape the website or fetch data.' });
   }
 });
+
 
 
 
