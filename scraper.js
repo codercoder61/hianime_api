@@ -142,6 +142,55 @@ app.get('/episodes', async (req, res) => {
  
 });
 
+app.get('/episodeServers', async (req, res) => {
+  const episodeId = req.query.episodeId;
+
+  if (!dataId) {
+    return res.status(400).json({ error: 'Please provide a "episodeId" query parameter.' });
+  }
+
+  const url = `https://hianime.to`;
+
+  
+    const { data } = await axios.get(
+    `${url}/ajax/v2/episode/servers`,
+      {
+        params: {
+          episodeId,
+        },
+      }
+    );
+    const $ = cheerio.load(data.html);
+   const subServers = $("div.servers-sub .server-item")
+      .map((_, element) => {
+        const server = {
+          type: $(element).attr("data-type")!,
+          id: $(element).attr("data-id")!,
+          serverId: $(element).attr("data-server-id")!,
+          name: $(element).find("a.btn").text(),
+        };
+        return server;
+      })
+      .get();
+
+    const dubServers = $("div.servers-dub .server-item")
+      .map((_, element) => {
+        const server = {
+          type: $(element).attr("data-type")!,
+          id: $(element).attr("data-id")!,
+          serverId: $(element).attr("data-server-id")!,
+          name: $(element).find("a.btn").text(),
+        };
+        return server;
+      })
+      .get();
+
+    return {
+      sub: subServers,
+      dub: dubServers,
+    };
+ 
+});
 
 app.get('/animeInfo', async (req, res) => {
   const animeId = req.query.animeId;
@@ -404,6 +453,7 @@ app.get('/filter', async (req, res) => {
     res.status(500).json({ error: 'Failed to scrape the website or fetch data.' });
   }
 });
+
 
 
 
