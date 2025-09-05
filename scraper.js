@@ -164,9 +164,9 @@ app.get('/episodeServers', async (req, res) => {
    const subServers = $("div.servers-sub .server-item")
       .map((_, element) => {
         const server = {
-          type: $(element).attr("data-type")!,
-          id: $(element).attr("data-id")!,
-          serverId: $(element).attr("data-server-id")!,
+          type: $(element).attr("data-type"),
+          id: $(element).attr("data-id"),
+          serverId: $(element).attr("data-server-id"),
           name: $(element).find("a.btn").text(),
         };
         return server;
@@ -176,9 +176,9 @@ app.get('/episodeServers', async (req, res) => {
     const dubServers = $("div.servers-dub .server-item")
       .map((_, element) => {
         const server = {
-          type: $(element).attr("data-type")!,
-          id: $(element).attr("data-id")!,
-          serverId: $(element).attr("data-server-id")!,
+          type: $(element).attr("data-type"),
+          id: $(element).attr("data-id"),
+          serverId: $(element).attr("data-server-id"),
           name: $(element).find("a.btn").text(),
         };
         return server;
@@ -453,6 +453,7 @@ app.get('/filter', async (req, res) => {
     res.status(500).json({ error: 'Failed to scrape the website or fetch data.' });
   }
 });
+
 
 
 
