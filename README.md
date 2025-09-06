@@ -75,5 +75,10 @@ Finished airing value="1"<br>
 Currently airing value="2"<br>
 Not yet aired value="3"<br><br>
 ## EPISODE SOURCE STREAMING URL <br>
-For episode source (streaming url to embed in iframe) use https://megaplay.buzz/api (For this, episode id is needed, you can get it with this route "/episodes?dataId=****")
+For episode source you have two options to choose from :<br>
+OPTION 1<br>
+  (streaming url to embed in iframe) use https://megaplay.buzz/api (For this, episode id is needed, you can get it with this route "/episodes?dataId=****")<br>
+OPTION 2<br> 
+  /episodeServers?epiosdeId={episodeId}<br>
+  /episodeSources?serverId={serverId}<br>
 
